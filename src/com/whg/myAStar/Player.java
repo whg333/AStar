@@ -3,9 +3,9 @@ package com.whg.myAStar;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import com.whg.myAStart.animation.Animation;
-import com.whg.myAStart.path.AStar;
-import com.whg.myAStart.path.FudgeAStar;
+import com.whg.myAStar.animation.Animation;
+import com.whg.myAStar.path.AStar;
+import com.whg.myAStar.path.FudgeAStar;
 
 public class Player extends Animation{
 

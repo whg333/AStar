@@ -21,7 +21,7 @@ import java.util.concurrent.Future;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 
-import com.whg.myAStart.path.AStar;
+import com.whg.myAStar.path.AStar;
 
 public class GamePanel extends JPanel implements MouseInputListener, KeyListener, Runnable {
 
