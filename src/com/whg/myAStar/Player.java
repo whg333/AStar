@@ -1,4 +1,4 @@
-package com.whg.myAStart;
+package com.whg.myAStar;
 
 import java.awt.Point;
 import java.awt.Rectangle;

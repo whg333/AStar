@@ -3,7 +3,7 @@ package com.whg.myAStart.path;
 import java.awt.Point;
 import java.util.Iterator;
 
-import com.whg.myAStart.TileCell;
+import com.whg.myAStar.TileCell;
 
 /**
  * 经典A*算法。

@@ -2,7 +2,7 @@ package com.whg.myAStart.path;
 
 import java.awt.Point;
 
-import com.whg.myAStart.TileCell;
+import com.whg.myAStar.TileCell;
 
 public class FudgeAStar extends ClassicAStar{
 

@@ -2,7 +2,7 @@ package com.whg.myAStart.path;
 
 import java.util.List;
 
-import com.whg.myAStart.TileCell;
+import com.whg.myAStar.TileCell;
 
 public class Path {
 

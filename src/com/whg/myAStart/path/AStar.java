@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.whg.myAStart.Player;
-import com.whg.myAStart.TileCell;
-import com.whg.myAStart.TileMap;
+import com.whg.myAStar.Player;
+import com.whg.myAStar.TileCell;
+import com.whg.myAStar.TileMap;
 
 public abstract class AStar extends Thread implements PathFinder {
 

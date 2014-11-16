@@ -1,4 +1,4 @@
-package com.whg.myAStart;
+package com.whg.myAStar;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
