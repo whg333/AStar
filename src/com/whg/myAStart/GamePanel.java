@@ -30,16 +30,17 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 	private static Random random = new Random();
 
 	public Image offScreenImage; // 用于绘制游戏图像
-
+	private Thread gameLoop;
+	private ExecutorService executor = Executors.newCachedThreadPool();
+	
 	private TileMap map;
+	private Set<Player> players;
 	private Player player;
 	private Player player2;
 	
-	private Set<Player> players;
-	private Set<Player> actors;
-
-	private Thread gameLoop;
-	private ExecutorService executor;
+	private Set<Player> actors = new HashSet<Player>();
+	private Point mousePressedPoint;
+	private Rectangle drawRouseDraggedRect = new Rectangle();
 	
 	private Map<Integer, Future<?>> findPathFutureMap = new HashMap<Integer, Future<?>>();
 	private Map<Integer, AStar> findPathTaskMap = new HashMap<Integer, AStar>();
@@ -60,10 +61,6 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 		players = new HashSet<Player>();
 		players.add(player);
 		players.add(player2);
-		
-		actors = new HashSet<Player>();
-		
-		executor = Executors.newCachedThreadPool();
 	}
 
 	private void start() {
@@ -201,9 +198,6 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 		}
 	}
 	
-	private Point mousePressedPoint;
-	private Rectangle drawRouseDraggedRect = new Rectangle();
-	
 	private void drawMouseDragged(Graphics2D g2d) {
 		g2d.setColor(Color.GREEN);
 		g2d.drawRect(drawRouseDraggedRect.x, drawRouseDraggedRect.y, 
@@ -249,7 +243,6 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
 		mousePressedPoint = e.getPoint();
 		
 		TileCell targetCell = map.getCell(TileCell.transformCellPoint(e.getPoint()));
@@ -258,47 +251,44 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 		}
 		
 		if(isMouseLeftKey(e)){
-			actors.clear();
-			for(Player player:players){
-				if(!player.isCollision(targetCell.getRectangle())){
-					continue;
-				}
-				actors.add(player);
-			}
+			recollectActors(targetCell);
 			return;
 		}
 		// System.out.println(targetCell);
 		
-		for(Player actor:actors){
-//			if(!actor.getFindPathTask().isShutDown()){
-//				System.out.println("shut down now...");
-//				actor.getFindPathTask().shutdown();
-//			}
-			Future<?> lastfindPathTask = findPathFutureMap.get(actor.getId());
-			if(lastfindPathTask != null 
-					&& !lastfindPathTask.isDone()
-					&& lastfindPathTask.cancel(true)){
-					System.out.println("cancel——"+lastfindPathTask);
+		actorsCancelTaskAndSubmitNew(targetCell);
+		
+	}
+	
+	private void recollectActors(TileCell targetCell){
+		actors.clear();
+		for(Player player:players){
+			if(!player.isCollision(targetCell.getRectangle())){
+				continue;
 			}
-			
-			AStar task = actor.newFindPathTask(map, targetCell);
-			//executor.execute(actor.getFindPathTask());
-			Future<?> findPathFuture = executor.submit(task);
-			findPathFutureMap.put(actor.getId(), findPathFuture);
-			findPathTaskMap.put(actor.getId(), task);
-			System.out.println("init——"+findPathFutureMap.get(actor.getId()));
+			actors.add(player);
+		}
+	}
+	
+	private void actorsCancelTaskAndSubmitNew(TileCell targetCell){
+		for(Player actor:actors){
+			cancelTaskAndSubmitNew(actor, targetCell);
+		}
+	}
+	
+	private void cancelTaskAndSubmitNew(Player actor, TileCell targetCell){
+		Future<?> lastfindPathTask = findPathFutureMap.get(actor.getId());
+		if(lastfindPathTask != null 
+				&& !lastfindPathTask.isDone()
+				&& lastfindPathTask.cancel(true)){
+				System.out.println("cancel——"+lastfindPathTask);
 		}
 		
-//		ThreadPoolExecutor taskExecutor = (ThreadPoolExecutor)executor;
-//		System.out.println("ActiveCount:"+taskExecutor.getActiveCount());
-//		System.out.println("TaskCount:"+taskExecutor.getTaskCount());
-//		System.out.println("CompletedTaskCount:"+taskExecutor.getCompletedTaskCount());
-		
-//		if (!findPathTask.isShutDown()) {
-//			findPathTask.shutdown();
-//		}
-//		findPathTask.init(map.clone(), player, targetCell);
-//		executor.execute(findPathTask);
+		AStar task = actor.newFindPathTask(map, targetCell);
+		Future<?> findPathFuture = executor.submit(task);
+		findPathFutureMap.put(actor.getId(), findPathFuture);
+		findPathTaskMap.put(actor.getId(), task);
+		System.out.println("init——"+findPathFutureMap.get(actor.getId()));
 	}
 	
 	@Override
