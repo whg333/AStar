@@ -10,7 +10,7 @@ import com.whg.myAStart.TileCell;
  * 老版本且低效率的A*算法，每一次寻路查找步骤都是遍历删除所有open列表的同时，又加入更多的节点至open列表，直到找到目标end节点
  *
  */
-public class OldAStart extends AStart{
+public class OldAStar extends AStar{
 
 	@Override
 	protected boolean stepFind(){

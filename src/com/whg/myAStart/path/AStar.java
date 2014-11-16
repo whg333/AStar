@@ -8,7 +8,7 @@ import com.whg.myAStart.Player;
 import com.whg.myAStart.TileCell;
 import com.whg.myAStart.TileMap;
 
-public abstract class AStart extends Thread implements PathFinder {
+public abstract class AStar extends Thread implements PathFinder {
 
 	private static final int MAX_STEP = 1000;
 

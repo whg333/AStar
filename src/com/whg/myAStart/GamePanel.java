@@ -21,7 +21,7 @@ import java.util.concurrent.Future;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 
-import com.whg.myAStart.path.AStart;
+import com.whg.myAStart.path.AStar;
 
 public class GamePanel extends JPanel implements MouseInputListener, KeyListener, Runnable {
 
@@ -42,7 +42,7 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 	private ExecutorService executor;
 	
 	private Map<Integer, Future<?>> findPathFutureMap = new HashMap<Integer, Future<?>>();
-	private Map<Integer, AStart> findPathTaskMap = new HashMap<Integer, AStart>();
+	private Map<Integer, AStar> findPathTaskMap = new HashMap<Integer, AStar>();
 
 	public GamePanel() {
 		init();
@@ -149,7 +149,7 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 
 	private TileMap actorsMap() {
 		 Player player = actors.iterator().next();
-		 AStart astart = findPathTaskMap.get(player.getId());
+		 AStar astart = findPathTaskMap.get(player.getId());
 		 return astart == null ? this.map : astart.getMap();
 	}
 
@@ -281,7 +281,7 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 					System.out.println("cancel——"+lastfindPathTask);
 			}
 			
-			AStart task = actor.newFindPathTask(map, targetCell);
+			AStar task = actor.newFindPathTask(map, targetCell);
 			//executor.execute(actor.getFindPathTask());
 			Future<?> findPathFuture = executor.submit(task);
 			findPathFutureMap.put(actor.getId(), findPathFuture);

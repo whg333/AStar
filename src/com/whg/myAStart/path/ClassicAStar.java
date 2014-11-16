@@ -14,7 +14,7 @@ import com.whg.myAStart.TileCell;
  * <br/>5、重复步骤2，直到找到路径或者当遍历完所有地图板块后（open列表为空时）表示没有找到路径。
  *
  */
-public class ClassicAStart extends OldAStart{
+public class ClassicAStar extends OldAStar{
 
 	private double minCost;
 	

@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import com.whg.myAStart.TileCell;
 
-public class FudgeAStart extends ClassicAStart{
+public class FudgeAStar extends ClassicAStar{
 
 	/** An implementation of Amit Patel's 'fudge' huristic. */
 	@Override

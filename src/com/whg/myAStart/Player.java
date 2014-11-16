@@ -4,8 +4,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import com.whg.myAStart.animation.Animation;
-import com.whg.myAStart.path.AStart;
-import com.whg.myAStart.path.FudgeAStart;
+import com.whg.myAStart.path.AStar;
+import com.whg.myAStart.path.FudgeAStar;
 
 public class Player extends Animation{
 
@@ -88,8 +88,8 @@ public class Player extends Animation{
 //		return findPathTask;
 //	}
 	
-	public AStart newFindPathTask(TileMap map, TileCell targetCell) {
-		AStart astart = new FudgeAStart();
+	public AStar newFindPathTask(TileMap map, TileCell targetCell) {
+		AStar astart = new FudgeAStar();
 		astart.init(map.clone(), this, targetCell);
 		return astart;
 	}
