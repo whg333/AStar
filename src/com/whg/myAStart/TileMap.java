@@ -25,6 +25,8 @@ public class TileMap implements Cloneable{
 	private static final int DEFAUL_WIDTH = 20;
 	private static final int DEFAULT_HEIGHT = 20;
 	
+	private boolean isDiagonal; //是否可以走斜线/对角线
+	
 	private final int width;
 	private final int height;
 	private final TileCell[][] cells;
@@ -41,10 +43,15 @@ public class TileMap implements Cloneable{
 //	}
 	
 	public TileMap(){
-		this(mapIndex);
+		this(mapIndex, true);
 	}
 	
-	public TileMap(int[][] mapIndex){
+	public TileMap(boolean isDiagonal){
+		this(mapIndex, isDiagonal);
+	}
+	
+	public TileMap(int[][] mapIndex, boolean isDiagonal){
+		this.isDiagonal = isDiagonal;
 		this.width = mapIndex[0].length;
 		this.height = mapIndex.length;
 		this.cells = new TileCell[width][height];
@@ -70,7 +77,7 @@ public class TileMap implements Cloneable{
 	@Override
 	public TileMap clone(){
 		//return new TileMap(width, height);
-		return new TileMap(mapIndex);
+		return new TileMap(mapIndex, false);
 	}
 	
 	public TileCell getStart(Player player){
@@ -125,6 +132,14 @@ public class TileMap implements Cloneable{
 	
 	/** 获取相邻的地图板块 */
 	public TileCell[] getAdjacents(TileCell g) {
+		if(isDiagonal){
+			return eightAdjacents(g);
+		}else{
+			return fourAdjacents(g);
+		}
+	}
+	
+	private TileCell[] eightAdjacents(TileCell g){
 		TileCell adjacents[] = new TileCell[8];
 		Point p = g.getCellPosition();
 		if (p.y != 0) {
@@ -154,6 +169,24 @@ public class TileMap implements Cloneable{
 		if(p.x != width - 1 && p.y != height - 1 && (adjacents[1].isCanPass() || adjacents[2].isCanPass())){
 			adjacents[7] = cells[p.x + 1][p.y + 1];	//right-bottom
 			if(adjacents[7].isCanPass()) adjacents[7].setCost(1.41);
+		}
+		return adjacents;
+	}
+	
+	private TileCell[] fourAdjacents(TileCell g){
+		TileCell adjacents[] = new TileCell[4];
+		Point p = g.getCellPosition();
+		if (p.y != 0) {
+			adjacents[0] = cells[p.x][p.y - 1];		//top
+		}
+		if (p.x != width - 1) {
+			adjacents[1] = cells[p.x + 1][p.y];		//right
+		}
+		if (p.y != height - 1) {
+			adjacents[2] = cells[p.x][p.y + 1];		//bottom
+		}
+		if (p.x != 0) {
+			adjacents[3] = cells[p.x - 1][p.y];		//left
 		}
 		return adjacents;
 	}

@@ -158,5 +158,9 @@ public abstract class AStar extends Thread implements PathFinder {
 	public TileMap getMap() {
 		return map;
 	}
+	
+	public boolean isEnd(TileCell targetCell){
+		return end.equals(map.getEnd(targetCell));
+	}
 
 }

@@ -277,6 +277,12 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 	}
 	
 	private void cancelTaskAndSubmitNew(Player actor, TileCell targetCell){
+		AStar lastFindPath = findPathTaskMap.get(actor.getId());
+		//如果终点和当前任务查找的终点一样就不重新再找了
+		if(lastFindPath != null && lastFindPath.isEnd(targetCell)){
+			return;
+		}
+		
 		Future<?> lastfindPathTask = findPathFutureMap.get(actor.getId());
 		if(lastfindPathTask != null 
 				&& !lastfindPathTask.isDone()
