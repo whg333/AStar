@@ -1,2 +1,7 @@
 # AStar
-AStart For Fun123
+AStart For Fun
+
+## Example
+Run **MainView.java**
+
+![pic](./images/pic.png)
