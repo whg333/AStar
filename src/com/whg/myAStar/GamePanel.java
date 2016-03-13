@@ -52,6 +52,16 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 		addMouseMotionListener(this);
 		start();
 	}
+	
+	public void initGUI(){
+		// 设置该mainPanel(JPanel的子类)布局为空,这样方可使用自己设置的坐标（Component的setBounds()方法）来安排组件的位置
+		setLayout(null);
+		// Component的setBounds()方法移动组件并调整其大小。由 x 和 y 指定左上角的新位置，由 width 和 height
+		// 指定新的大小。
+		setBounds(0, 0, MainView.WIDTH, MainView.HEIGHT);
+		// setBackground(new Color(128, 64, 0)); //设置背景颜色
+		setFocusable(true); // 画板初始时便可以获得焦点
+	}
 
 	private void init() {
 		map = new TileMap();
